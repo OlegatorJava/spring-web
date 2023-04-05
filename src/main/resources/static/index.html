@@ -1,0 +1,114 @@
+<!doctype html>
+
+<html ng-app="app">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="index.js"></script>
+</head>
+
+<body>
+
+<div class="container" ng-controller="indexController">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Главная</a>
+                </li>
+                <li class="nav-item" ng-show="!isUserLoggedIn()">
+                    <form class="align-middle" ng-submit="tryToAuth()">
+                        <div class="input-group input-group-sm" style="...">
+                            <input id="navLoginField" class="form-control" ng-model="user.username" type="text"
+                                   aria-describedby="inputGroup-sizing-sm" style="...">
+
+                            <input id="navPasswordField" class="form-control" ng-model="user.password" type="password"
+                                   aria-describedby="inputGroup-sizing-sm" style="...">
+                            <button id="navLoginSubmit" class="btn btn-outline-warning btn-sm"
+                                    style="..." type="submit">Войти
+                            </button>
+                        </div>
+                    </form>
+                </li>
+                <li class="nav-item" ng-show="isUserLoggedIn()" style="...">
+                    <button class="btn btn-outline-secondary btn-sm" ng-click="tryToLogout()">Выйти
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+    </nav>
+
+    <h3>Продукты</h3>
+    <table class="table table-hover" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>ID</td>
+            <td>Название</td>
+            <td>Цена</td>
+        </tr>
+        <tbody>
+        <tr ng-repeat="s in ProductsPage.content">
+            <td>{{s.id}}</td>
+            <td>{{s.title}}</td>
+            <td>{{s.cost}}</td>
+            <td>
+                <button class="btn btn-danger" ng-click="deleteProduct(s.id)">Удалить</button>
+            </td>
+            <td>
+                <button class="btn btn-primary" ng-click="addProductInCart(s.id)">Добавить в корзину</button>
+            </td>
+        </tr>
+    </table>
+    <form novalidate="" ng-submit="filtrationMinMaxCost()">
+        <input class="form-control" type="number" placeholder="Минимум" ng-model="min" name="min">
+        <p></p>
+        <input class="form-control" type="number" placeholder="Максимум" ng-model="max" name="max">
+        <p></p>
+        <button type="submit" class="btn btn-primary" ng-click="loadProducts()">Покажи товары между этими ценами</button>
+    </form>
+    </tbody>
+    <h3>Добавить продукт</h3>
+    <form novalidate ng-submit="createProduct()">
+        <input class="form-control" type="text" placeholder="Название" ng-model="newProductDto.title">
+        <p></p>
+        <input class="form-control" type="number" placeholder="Цена" ng-model="newProductDto.cost">
+        <p></p>
+        <button type="submit" class="btn btn-primary">Добавить продукт</button>
+    </form>
+
+
+
+    <h3>Корзина</h3>
+    <table class="table table-hover" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>ID</td>
+            <td>Название</td>
+            <td>Количество</td>
+            <td>Цена</td>
+        </tr>
+        <tbody>
+        <tr ng-repeat="s in cart.cartItemList">
+            <td>{{s.productId}}</td>
+            <td>{{s.productTitle}}</td>
+            <td>{{s.quantity}}</td>
+            <td>{{s.price + ' x ' + s.quantity + ' = ' + s.pricePerProduct}}</td>
+            <td>
+                <button class="btn btn-danger" ng-click="removeProductFromCart(s.productId)">Удалить</button>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>Итого</td>
+            <td>{{cart.totalPrice}}</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

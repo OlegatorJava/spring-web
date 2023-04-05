@@ -1,0 +1,15 @@
+server:
+  port: 8189
+  servlet:
+    context-path: /app
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/geekbrains_jpa
+    username: oleg
+    password: 12345
